@@ -1,0 +1,17 @@
+{
+  "name": "protrade-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "imagens": "node gerar/imagens.ts",
+    "build": "tsc --noEmit && vite build && node gerar/paginas.ts",
+    "servir": "python -m http.server 4192 -d dist"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.21",
+    "playwright": "^1.52.0",
+    "sharp": "^0.34.2",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5"
+  }
+}
