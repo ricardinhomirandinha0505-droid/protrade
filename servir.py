@@ -18,4 +18,7 @@ class H(http.server.SimpleHTTPRequestHandler):
     def end_headers(s):
         if '/assets/' in s.path or '/img/' in s.path or '/fontes/' in s.path: s.send_header('Cache-Control', 'public, max-age=31536000, immutable')
         super().end_headers()
-http.server.ThreadingHTTPServer(('127.0.0.1', 4192), H).serve_forever()
+class S(http.server.ThreadingHTTPServer):
+    request_queue_size = 256
+    daemon_threads = True
+S(('127.0.0.1', 4192), H).serve_forever()

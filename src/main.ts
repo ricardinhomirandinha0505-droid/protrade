@@ -190,8 +190,8 @@ function galeria() {
   const carrega = (k: number) => { const f = fotos[k]; if (f?.dataset.srcset) { f.srcset = f.dataset.srcset; delete f.dataset.srcset; } };
   const vai = (k: number) => {
     k = (k + fotos.length) % fotos.length; carrega(k); carrega((k + 1) % fotos.length);
-    fotos[i].classList.remove('ativo'); minis[i]?.classList.remove('ativo');
-    i = k; fotos[i].classList.add('ativo'); minis[i]?.classList.add('ativo');
+    fotos[i].classList.remove('ativo'); minis[i]?.classList.remove('ativo'); minis[i]?.removeAttribute('aria-current');
+    i = k; fotos[i].classList.add('ativo'); minis[i]?.classList.add('ativo'); minis[i]?.setAttribute('aria-current', 'true');
     if (conta) conta.textContent = String(i + 1);
     minis[i]?.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: semMov() ? 'auto' : 'smooth' });
   };

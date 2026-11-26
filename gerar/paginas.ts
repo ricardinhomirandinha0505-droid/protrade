@@ -312,7 +312,7 @@ ${topo(false)}
     <p class="galeria-conta" aria-live="polite"><span data-conta>1</span> / ${c.nFotos}</p>
   </div>
   <div class="galeria-tira" data-tira>
-    ${ordem.map((i, k) => `<button type="button" class="galeria-mini${k === 0 ? ' ativo' : ''}" aria-label="Ver fotografia ${k + 1}" data-mini="${k}"><img src="${img(c, i, 640)}" alt="" width="640" height="444" loading="lazy" decoding="async"></button>`).join('')}
+    ${ordem.map((i, k) => `<button type="button" class="galeria-mini${k === 0 ? ' ativo' : ''}"${k === 0 ? ' aria-current="true"' : ''} aria-label="Ver fotografia ${k + 1}" data-mini="${k}"><img src="${img(c, i, 640)}" alt="" width="640" height="444" loading="lazy" decoding="async"></button>`).join('')}
   </div>
 </section>
 </div>
