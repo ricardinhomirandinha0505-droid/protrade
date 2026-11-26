@@ -5,3 +5,4 @@ dados/raw/
 *.log
 testes/capturas/
 testes/*.json
+prévias/

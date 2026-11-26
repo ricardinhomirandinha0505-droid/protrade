@@ -5,7 +5,7 @@ import path from 'node:path';
 import sharp from 'sharp';
 import { carros, RAIZ } from './modelo.ts';
 
-const LARG = [640, 1200, 1800];
+const LARG = [640, 900, 1200, 1800];
 const out = path.join(RAIZ, 'public', 'img');
 let n = 0;
 for (const c of carros()) {

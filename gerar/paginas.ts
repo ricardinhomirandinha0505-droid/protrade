@@ -23,18 +23,23 @@ const man = JSON.parse(fs.readFileSync(path.join(DIST, '.vite', 'manifest.json')
 const entrada = man['src/main.ts'];
 const JS = R(entrada.file), CSS = [...(entrada.css ?? []), ...(man['style.css'] ? [man['style.css'].file] : [])].map((c: string) => R(c));
 
+// o CSS vai embutido em cada página (sem pedido a bloquear a primeira pintura); a letra é servida pelo próprio site
+const CSS_TXT = CSS.map((c: string) => fs.readFileSync(path.join(DIST, c.slice(BASE.length)), 'utf8')).join('');
+const FONTES = ['', '-it'].map((v) => `@font-face{font-family:Montserrat;font-style:${v ? 'italic' : 'normal'};font-weight:400 800;font-display:swap;src:url(${R(`fontes/montserrat${v}.woff2`)}) format('woff2')}`).join('');
 const esc = (s: string) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const wa = (txt: string) => `https://wa.me/${WA}?text=${encodeURIComponent(txt)}`;
 const pad = (i: number) => String(i).padStart(2, '0');
 const img = (c: Carro, i: number, w: number) => R(`img/${c.slug}/${pad(i)}-${w}.webp`);
-const srcset = (c: Carro, i: number) => [640, 1200, 1800].map((w) => `${img(c, i, w)} ${w}w`).join(', ');
+const srcset = (c: Carro, i: number) => [640, 900, 1200, 1800].map((w) => `${img(c, i, w)} ${w}w`).join(', ');
 
 // ---------- logótipo verdadeiro, vectorizado do original (gerar/logo.svg) ----------
 const LOGO = fs.readFileSync(path.join(RAIZ, 'gerar', 'logo.svg'), 'utf8');
 const camada = (n: string) => (LOGO.match(new RegExp(`<path class="lg-${n}"[^>]*/>`)) ?? [''])[0];
 const SIMB_VB = '655 28 549 549', PAL_VB = '26 688 1905 261';
-const simbolo = (cls: string) => `<svg class="${cls}" viewBox="${SIMB_VB}" aria-hidden="true">${camada('simbolo')}</svg>`;
-const palavra = (cls: string) => `<svg class="${cls}" viewBox="${PAL_VB}" aria-hidden="true">${camada('pro')}${camada('trade')}</svg>`;
+const simbolo = (cls: string) => `<svg class="${cls}" viewBox="${SIMB_VB}" aria-hidden="true"><use href="#lg-simbolo"/></svg>`;
+const palavra = (cls: string) => `<svg class="${cls}" viewBox="${PAL_VB}" aria-hidden="true"><use href="#lg-pro"/><use href="#lg-trade"/></svg>`;
+// o desenho do logótipo vai uma vez por página; as cópias usam <use>
+const SIMBOLOS = `<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>${['simbolo', 'pro', 'trade', 'automoveis'].map((n) => camada(n).replace(`class="lg-${n}"`, `id="lg-${n}" class="lg-${n}"`)).join('')}</defs></svg>`;
 
 // As oito pétalas do símbolo (o anel do logótipo é feito de círculos sobrepostos): forma-se na abertura.
 const petalas = Array.from({ length: 8 }, (_, k) => {
@@ -79,11 +84,9 @@ ${NOINDEX ? '<meta name="robots" content="noindex, nofollow">' : ''}
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="${R('favicon.svg')}" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,700;0,800;1,700;1,800&display=swap">
+<link rel="preload" href="${R('fontes/montserrat-it.woff2')}" as="font" type="font/woff2" crossorigin>
 ${o.preload ?? ''}
-${CSS.map((c: string) => `<link rel="stylesheet" href="${c}">`).join('\n')}
+<style>${FONTES}${CSS_TXT}</style>
 <script>try{if(localStorage.getItem('pt-movimento')==='0')document.documentElement.classList.add('sem-movimento')}catch(e){}document.documentElement.classList.add('js')</script>
 <script type="module" src="${JS}"></script>
 ${o.jsonld.map((j) => `<script type="application/ld+json">${JSON.stringify(j)}</script>`).join('\n')}
@@ -121,7 +124,7 @@ function contacto(lista: Carro[], escolhido?: Carro) {
       <span>Chamo-me</span>
       <label class="vh" for="f-nome">O seu nome</label><input id="f-nome" name="nome" autocomplete="name" placeholder="o seu nome" required>
       <span>e o meu número é</span>
-      <label class="vh" for="f-tel">O seu telemóvel</label><input id="f-tel" name="telefone" type="tel" inputmode="tel" autocomplete="tel" placeholder="o seu número" required pattern="[0-9 +]{9,16}">
+      <label class="vh" for="f-tel">O seu telemóvel</label><input id="f-tel" name="telefone" type="tel" inputmode="tel" autocomplete="tel" placeholder="telemóvel" required pattern="[0-9 +]{9,16}">
       <span>Quero saber do</span>
       <label class="vh" for="f-carro">O carro que lhe interessa</label><select id="f-carro" name="carro">${opc}<option value="outro carro"${escolhido ? '' : ' selected'}>carro que procuro</option></select>
     </p>
@@ -176,6 +179,7 @@ function home(cs: Carro[]) {
   const audi = dest;
   const corpo = `
 <body class="pg-home">
+${SIMBOLOS}
 ${topo(true)}
 <main id="conteudo">
 <section class="hero" data-hero>
@@ -191,9 +195,9 @@ ${topo(true)}
     <div class="abertura-logo" data-abertura-logo>
       <svg class="ab-petalas" viewBox="-1.05 -1.05 2.1 2.1"><defs><clipPath id="anel"><circle r="1"/></clipPath></defs><g clip-path="url(#anel)">${petalas}</g></svg>
       ${simbolo('ab-simbolo')}
-      <svg class="ab-pro" viewBox="26 688 680 261">${camada('pro')}</svg>
-      <svg class="ab-trade" viewBox="730 688 1201 261">${camada('trade')}</svg>
-      <svg class="ab-auto" viewBox="486 1027 932 117">${camada('automoveis')}</svg>
+      <svg class="ab-pro" viewBox="26 688 680 261"><use href="#lg-pro"/></svg>
+      <svg class="ab-trade" viewBox="730 688 1201 261"><use href="#lg-trade"/></svg>
+      <svg class="ab-auto" viewBox="486 1027 932 117"><use href="#lg-automoveis"/></svg>
     </div>
   </div>
 </section>
@@ -289,6 +293,7 @@ function ficha(c: Carro, cs: Carro[]) {
   const msg = `Olá Protrade, vi o ${c.nome} ${c.versao} (${euros(c.preco)}) no vosso site e gostava de saber mais.`;
   const corpo = `
 <body class="pg-ficha">
+${SIMBOLOS}
 ${topo(false)}
 <main id="conteudo">
 <div class="ficha-cima">

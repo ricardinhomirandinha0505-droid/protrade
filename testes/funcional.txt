@@ -1,0 +1,21 @@
+node:internal/modules/run_main:111
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at C:\Users\Ricardo Miranda\AppData\Local\ms-playwright\webkit-2158\Playwright.exe
+╔═════════════════════════════════════════════════════════════════════════╗
+║ Looks like Playwright Test or Playwright was just installed or updated. ║
+║ Please run the following command to download new browsers:              ║
+║                                                                         ║
+║     npx playwright install                                              ║
+║                                                                         ║
+║ <3 Playwright Team                                                      ║
+╚═════════════════════════════════════════════════════════════════════════╝
+    at correVista (C:\Users\Ricardo Miranda\AgentMaybach\skills\websitepromax\scripts\porta-funcional.mjs:345:29)
+    at C:\Users\Ricardo Miranda\AgentMaybach\skills\websitepromax\scripts\porta-funcional.mjs:377:60
+    at C:\Users\Ricardo Miranda\AgentMaybach\skills\websitepromax\scripts\porta-funcional.mjs:377:49
+    at async node:internal/modules/esm/loader:650:26 {
+  name: 'Error'
+}
+
+Node.js v26.13.0
