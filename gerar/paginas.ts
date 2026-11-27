@@ -35,7 +35,7 @@ const srcset = (c: Carro, i: number) => [640, 900, 1200, 1800].map((w) => `${img
 // ---------- logótipo verdadeiro, vectorizado do original (gerar/logo.svg) ----------
 const LOGO = fs.readFileSync(path.join(RAIZ, 'gerar', 'logo.svg'), 'utf8');
 const camada = (n: string) => (LOGO.match(new RegExp(`<path class="lg-${n}"[^>]*/>`)) ?? [''])[0];
-const SIMB_VB = '655 28 549 549', PAL_VB = '26 688 1905 261';
+const SIMB_VB = '655 28 549 549', PAL_VB = '26 688 1905 286';
 const simbolo = (cls: string) => `<svg class="${cls}" viewBox="${SIMB_VB}" aria-hidden="true"><use href="#lg-simbolo"/></svg>`;
 const palavra = (cls: string) => `<svg class="${cls}" viewBox="${PAL_VB}" aria-hidden="true"><use href="#lg-pro"/><use href="#lg-trade"/></svg>`;
 // o desenho do logótipo vai uma vez por página; as cópias usam <use>
@@ -197,8 +197,8 @@ ${topo(true)}
     <div class="abertura-logo" data-abertura-logo>
       <svg class="ab-petalas" viewBox="-1.05 -1.05 2.1 2.1"><defs><clipPath id="anel"><circle r="1"/></clipPath></defs><g clip-path="url(#anel)">${petalas}</g></svg>
       ${simbolo('ab-simbolo')}
-      <svg class="ab-pro" viewBox="26 688 680 261"><use href="#lg-pro"/></svg>
-      <svg class="ab-trade" viewBox="730 688 1201 261"><use href="#lg-trade"/></svg>
+      <svg class="ab-pro" viewBox="26 688 680 286"><use href="#lg-pro"/></svg>
+      <svg class="ab-trade" viewBox="730 688 1201 286"><use href="#lg-trade"/></svg>
       <svg class="ab-auto" viewBox="486 1027 932 117"><use href="#lg-automoveis"/></svg>
     </div>
   </div>
@@ -210,7 +210,7 @@ ${topo(true)}
 
 <section class="origem" id="origem" data-origem>
   <h2 class="cinetico"><span class="l"><span>De onde vem</span></span><span class="l"><span><em>cada carro?</em></span></span></h2>
-  <p class="origem-resposta">Directamente do primeiro proprietário, com a manutenção feita segundo as regras do fabricante.</p>
+  <p class="origem-resposta">Diretamente do primeiro proprietário, com a manutenção feita segundo as regras do fabricante.</p>
   <div class="estrada" data-estrada>
     <ol class="paragens">
       <li data-paragem="0"><b>Instituição financeira</b> ou concessionário oficial</li>
@@ -376,7 +376,10 @@ async function cartao(foto: string, l1: string, l2: string, l3: string, dst: str
 
 // ---------- escrever ----------
 const cs = carros();
-const escreve = (rota: string, html: string) => { const p = path.join(DIST, rota); fs.mkdirSync(path.dirname(p), { recursive: true }); fs.writeFileSync(p, html); };
+// ortografia atual (AO90): os anúncios do Standvirtual ainda trazem a antiga
+const AO90: [RegExp, string][] = [[/([Dd])irectamente/g, '$1iretamente'], [/([Ee])lectr/g, '$1letr'], [/([Tt])racção/g, '$1ração'], [/([Dd])irecção/g, '$1ireção'], [/Óptic/g, 'Ótic'], [/óptic/g, 'ótic'], [/([Pp])rotecção/g, '$1roteção'], [/([Ss])elecção/g, '$1eleção'], [/([Cc])olecção/g, '$1oleção'], [/([Aa])ctua/g, '$1tua'], [/([Oo])bjectiv/g, '$1bjetiv'], [/([Ee])xactamente/g, '$1xatamente'], [/([Aa])ccionament/g, '$1cionament']];
+const ao90 = (h: string) => AO90.reduce((t, [r, n]) => t.replace(r, n), h);
+const escreve = (rota: string, html: string) => { html = ao90(html); const p = path.join(DIST, rota); fs.mkdirSync(path.dirname(p), { recursive: true }); fs.writeFileSync(p, html); };
 escreve('index.html', home(cs));
 for (const c of cs) escreve(`viaturas/${c.slug}/index.html`, ficha(c, cs));
 fs.mkdirSync(path.join(DIST, 'og'), { recursive: true });

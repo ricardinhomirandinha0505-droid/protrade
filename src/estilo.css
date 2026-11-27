@@ -112,9 +112,9 @@ p { margin: 0; }
 .ab-simbolo { opacity: 0; transition: opacity .35s ease; }
 .abertura.p2 .ab-simbolo { opacity: 1; }
 .abertura.p2 .ab-petalas { opacity: 0; transition: opacity .45s ease .15s; }
-.ab-pro { left: calc(26 / 1956 * 100%); top: calc(688 / 1168 * 100%); width: calc(680 / 1956 * 100%); height: calc(261 / 1168 * 100%); color: #fff; clip-path: inset(0 0 0 0); }
+.ab-pro { left: calc(26 / 1956 * 100%); top: calc(688 / 1168 * 100%); width: calc(680 / 1956 * 100%); height: calc(286 / 1168 * 100%); color: #fff; clip-path: inset(0 0 0 0); }
 .ab-pro, .ab-trade { color: #fff; }
-.ab-trade { left: calc(730 / 1956 * 100%); top: calc(688 / 1168 * 100%); width: calc(1201 / 1956 * 100%); height: calc(261 / 1168 * 100%); }
+.ab-trade { left: calc(730 / 1956 * 100%); top: calc(688 / 1168 * 100%); width: calc(1201 / 1956 * 100%); height: calc(286 / 1168 * 100%); }
 .ab-auto { left: calc(486 / 1956 * 100%); top: calc(1027 / 1168 * 100%); width: calc(932 / 1956 * 100%); height: calc(117 / 1168 * 100%); }
 .ab-pro { transform: translateY(40%); opacity: 0; transition: transform .7s var(--mola), opacity .5s ease; }
 .ab-trade { transform: translateX(38%) skewX(-14deg); opacity: 0; filter: blur(7px); transition: transform .55s cubic-bezier(.1, .9, .2, 1), opacity .25s ease, filter .55s ease; }
