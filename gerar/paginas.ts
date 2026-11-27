@@ -17,7 +17,7 @@ const TEL = '911 150 080', TEL_E164 = '+351911150080', WA = '351911150080', EMAI
 const MORADA = 'Rua da Fundição, Edifício Caíde Gold, Loja 13, 4620-042 Caíde de Rei, Lousada';
 const MAPA = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent('Protrade Automóveis, Rua da Fundição, Caíde de Rei, Lousada');
 const REDES = { instagram: 'https://www.instagram.com/protrade.lda/', facebook: 'https://www.facebook.com/protrade.lda', youtube: 'https://www.youtube.com/channel/UCEJSL2OIL_bWFe906LZTTAw' };
-const DATA_LISTA = '26/11/2026';
+
 
 const man = JSON.parse(fs.readFileSync(path.join(DIST, '.vite', 'manifest.json'), 'utf8'));
 const entrada = man['src/main.ts'];
@@ -147,7 +147,7 @@ function rodape() {
   </div>
   <div class="rodape-linha rodape-pe">
     <p>${esc(MORADA)} · <a href="tel:${TEL_E164}" data-cta="rodape-ligar">${TEL}</a> (chamada para a rede móvel nacional) · <a href="mailto:${EMAIL}" data-cta="rodape-email">${EMAIL}</a></p>
-    <p><button class="mov" type="button" aria-pressed="false" data-movimento>Reduzir movimento</button> · Carros, preços e fotografias dos anúncios da Protrade a ${DATA_LISTA}.</p>
+    <p><button class="mov" type="button" aria-pressed="false" data-movimento>Reduzir movimento</button></p>
   </div>
 </footer>`;
 }
@@ -219,6 +219,7 @@ ${topo(true)}
       <li data-paragem="3"><b>Protrade</b> em Caíde de Rei, Lousada</li>
     </ol>
     <div class="estrada-via"><span class="estrada-traco" data-traco></span></div>
+    <span class="estrada-sombra" data-sombra aria-hidden="true"></span>
     <img class="estrada-carro" data-carro src="${R('img/audi-perfil.webp')}" srcset="${R('img/audi-perfil-600.webp')} 600w, ${R('img/audi-perfil.webp')} 1100w" sizes="(max-width: 700px) 46vw, 30vw" alt="Audi A3 Sportback 45 TFSIe da Protrade, de perfil" width="1100" height="407" loading="lazy" decoding="async">
   </div>
 </section>
@@ -226,7 +227,7 @@ ${topo(true)}
 <section class="viaturas" id="viaturas">
   <div class="viaturas-cabeca">
     <h2 class="cinetico"><span class="l"><span>Que carros</span></span><span class="l"><span><em>temos agora?</em></span></span></h2>
-    <p>Sete carros, de ${euros(minP)} a ${euros(maxP)}. Lista de ${DATA_LISTA}.</p>
+    <p>Sete carros, de ${euros(minP)} a ${euros(maxP)}.</p>
   </div>
   <a class="destaque" href="${R(`viaturas/${dest.slug}/`)}" data-cta-nav="destaque">
     <span class="destaque-foto"><img src="${img(dest, 1, 1200)}" srcset="${srcset(dest, 1)}" sizes="(max-width: 900px) 100vw, 62vw" alt="${esc(dest.nome + ' ' + dest.versao)}, de frente" width="1448" height="1004" loading="lazy" decoding="async"></span>

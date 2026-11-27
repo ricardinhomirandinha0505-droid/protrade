@@ -137,7 +137,7 @@ async function abertura() {
 
 // ---------- origem: o Audi faz o caminho da origem com o scroll, as paragens acendem ----------
 function origem() {
-  const sec = $('[data-origem]'), carro = $<HTMLImageElement>('[data-carro]'), traco = $('[data-traco]'), estrada = $('[data-estrada]');
+  const sec = $('[data-origem]'), carro = $<HTMLImageElement>('[data-carro]'), traco = $('[data-traco]'), estrada = $('[data-estrada]'), sombra = $('[data-sombra]');
   if (!sec || !carro || !estrada) return;
   const paragens = $$('[data-paragem]', sec);
   let alvo = 0, atual = 0, ativo = false;
@@ -147,15 +147,16 @@ function origem() {
     alvo = Math.min(1, Math.max(0, p));
   };
   const pinta = () => {
-    atual += (alvo - atual) * (semMov() ? 1 : .12);
+    atual += (alvo - atual) * (semMov() ? 1 : .075);
     const max = estrada.clientWidth - carro.clientWidth;
-    carro.style.setProperty('--x', `${(atual * max).toFixed(1)}px`);
+    carro.style.setProperty('--x', `${(atual * max).toFixed(2)}px`);
+    sombra?.style.setProperty('--x', `${(atual * max).toFixed(2)}px`); sombra?.style.setProperty('--x-fim', `${max}px`);
     carro.style.setProperty('--x-fim', `${max}px`);
-    traco?.style.setProperty('--o', (atual * 9).toFixed(3));
     // cada paragem acende quando a frente do carro passa por baixo dela
     const frente = atual * max + carro.clientWidth * .82, base = estrada.getBoundingClientRect().left;
+    traco?.style.setProperty('--w', `${(semMov() ? max + carro.clientWidth * .82 : frente).toFixed(1)}px`);
     paragens.forEach((li) => li.classList.toggle('aceso', semMov() || frente >= li.getBoundingClientRect().left - base + 24));
-    if (Math.abs(alvo - atual) > .0005) requestAnimationFrame(pinta); else ativo = false;
+    if (Math.abs(alvo - atual) > .0002) requestAnimationFrame(pinta); else ativo = false;
   };
   const pede = () => { medir(); if (!ativo) { ativo = true; requestAnimationFrame(pinta); } };
   addEventListener('scroll', pede, { passive: true }); addEventListener('resize', pede); document.addEventListener('pt-movimento', pede);
