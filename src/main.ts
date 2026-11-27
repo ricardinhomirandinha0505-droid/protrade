@@ -139,23 +139,30 @@ async function abertura() {
 function origem() {
   const sec = $('[data-origem]'), carro = $<HTMLImageElement>('[data-carro]'), traco = $('[data-traco]'), estrada = $('[data-estrada]'), sombra = $('[data-sombra]');
   if (!sec || !carro || !estrada) return;
-  const paragens = $$('[data-paragem]', sec);
+  const paragens = $$('[data-paragem]', sec), pinos = $$('[data-pino]', sec);
+  const POS = [.125, .375, .625, 1];
   let alvo = 0, atual = 0, ativo = false;
   const medir = () => {
     const r = estrada.getBoundingClientRect();
-    const p = (innerHeight * .92 - r.top) / (r.height + innerHeight * .55);
+    const p = (innerHeight * .9 - r.top) / (innerHeight * .5);
     alvo = Math.min(1, Math.max(0, p));
   };
   const pinta = () => {
     atual += (alvo - atual) * (semMov() ? 1 : .075);
-    const max = estrada.clientWidth - carro.clientWidth;
+    const max = estrada.clientWidth - carro.clientWidth - 36; // o carro pára antes do pino do destino
     carro.style.setProperty('--x', `${(atual * max).toFixed(2)}px`);
     sombra?.style.setProperty('--x', `${(atual * max).toFixed(2)}px`); sombra?.style.setProperty('--x-fim', `${max}px`);
     carro.style.setProperty('--x-fim', `${max}px`);
     // cada paragem acende quando a frente do carro passa por baixo dela
-    const frente = atual * max + carro.clientWidth * .82, base = estrada.getBoundingClientRect().left;
-    traco?.style.setProperty('--w', `${(semMov() ? max + carro.clientWidth * .82 : frente).toFixed(1)}px`);
-    paragens.forEach((li) => li.classList.toggle('aceso', semMov() || frente >= li.getBoundingClientRect().left - base + 24));
+    const frente = atual * max + carro.clientWidth * .82;
+    const W = estrada.clientWidth, fim = semMov() ? W : frente + (W - max - carro.clientWidth * .82) * atual;
+    traco?.style.setProperty('--w', `${Math.min(W, fim).toFixed(1)}px`);
+    // os pinos marcam cada etapa: acendem quando a frente do carro lá chega, e a etapa de cima acende com eles
+    pinos.forEach((pino, k) => {
+      const x = k === 3 ? W - 14 : POS[k] * W; pino.style.setProperty('--px', `${x.toFixed(1)}px`);
+      const ok = semMov() || (k === 3 ? atual > .985 : fim >= x);
+      pino.classList.toggle('aceso', ok); paragens[k]?.classList.toggle('aceso', ok);
+    });
     if (Math.abs(alvo - atual) > .0002) requestAnimationFrame(pinta); else ativo = false;
   };
   const pede = () => { medir(); if (!ativo) { ativo = true; requestAnimationFrame(pinta); } };

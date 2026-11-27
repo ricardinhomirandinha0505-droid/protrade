@@ -219,6 +219,7 @@ ${topo(true)}
       <li data-paragem="3"><b>Protrade</b> em Caíde de Rei, Lousada</li>
     </ol>
     <div class="estrada-via"><span class="estrada-traco" data-traco></span></div>
+    <span class="pino" data-pino aria-hidden="true"><i></i></span><span class="pino" data-pino aria-hidden="true"><i></i></span><span class="pino" data-pino aria-hidden="true"><i></i></span><span class="pino pino-fim" data-pino aria-hidden="true"><i></i></span>
     <span class="estrada-sombra" data-sombra aria-hidden="true"></span>
     <img class="estrada-carro" data-carro src="${R('img/audi-perfil.webp')}" srcset="${R('img/audi-perfil-600.webp')} 600w, ${R('img/audi-perfil.webp')} 1100w" sizes="(max-width: 700px) 46vw, 30vw" alt="Audi A3 Sportback 45 TFSIe da Protrade, de perfil" width="1100" height="407" loading="lazy" decoding="async">
   </div>
