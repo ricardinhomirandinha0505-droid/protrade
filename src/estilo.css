@@ -81,12 +81,11 @@ p { margin: 0; }
 .hero { position: relative; height: 100svh; min-height: 560px; background: var(--tinta); overflow: clip; }
 .hero-moldura { position: absolute; inset: 0; overflow: hidden; transform-origin: 50% 30%; will-change: transform; border-radius: calc(var(--p, 0) * 18px); transform: scale(calc(1 - var(--p, 0) * .1)); }
 .hero-planos { position: absolute; inset: 0; }
-.hero-plano { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.8s ease; transform: scale(1.02); }
-.hero-plano.ativo { opacity: 1; animation: camara 8s linear both; }
-.hero-plano:nth-child(2n).ativo { animation-name: camara-b; }
-@keyframes camara { from { transform: scale(1.02) translate3d(0, 0, 0); } to { transform: scale(1.11) translate3d(-1.6%, -.8%, 0); } }
-@keyframes camara-b { from { transform: scale(1.11) translate3d(1.4%, -.6%, 0); } to { transform: scale(1.02) translate3d(0, 0, 0); } }
-.hero-veu { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10, 15, 44, .55) 0%, rgba(10, 15, 44, 0) 26%, rgba(10, 15, 44, 0) 48%, rgba(10, 15, 44, .82) 100%); }
+.hero-capa, .hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.hero-video { opacity: 0; transition: opacity 1s ease; }
+.toca .hero-video { opacity: 1; }
+.hero-veu { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10, 15, 44, .6) 0%, rgba(10, 15, 44, .3) 30%, rgba(10, 15, 44, .42) 55%, rgba(10, 15, 44, .88) 100%); }
+@media (max-width: 899px) { .hero-veu { background: linear-gradient(180deg, rgba(10, 15, 44, .62) 0%, rgba(10, 15, 44, .5) 35%, rgba(10, 15, 44, .62) 60%, rgba(10, 15, 44, .9) 100%); } }
 .hero-titulo { position: absolute; left: var(--lado); right: var(--lado); bottom: calc(var(--barra-h) + 40px); color: #fff; font-size: clamp(46px, 12.5vw, 150px); font-style: italic; text-transform: uppercase; letter-spacing: -.035em; line-height: .9; }
 .hero-titulo em { color: #fff; -webkit-text-stroke: 0; }
 .hero-titulo .l:last-child > span { color: var(--azul); }
@@ -94,6 +93,7 @@ p { margin: 0; }
 .js .hero-titulo .l { overflow: visible; }
 .js .hero-titulo .l > span { transform: translateY(.42em) scale(1.04); filter: none; opacity: 1; letter-spacing: .02em; transition: transform 1.2s var(--mola), letter-spacing 1.2s var(--mola); transition-delay: calc(var(--n, 0) * 120ms); }
 .js .hero-titulo.visto .l > span { transform: none; letter-spacing: -.035em; }
+@media (max-width: 899px) { .hero-titulo { bottom: auto; top: 42%; } }
 @media (min-width: 900px) { .hero-titulo { bottom: 72px; max-width: 12ch; font-size: clamp(60px, 7.8vw, 116px); } }
 
 /* abertura: as ripas da parede deles tapam o hero, o anel forma-se, TRADE entra a acelerar, as ripas abrem */

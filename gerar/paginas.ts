@@ -166,7 +166,8 @@ function home(cs: Carro[]) {
   const por = (s: string) => cs.find((c) => c.slug.startsWith(s))!;
   const planos: [Carro, number][] = [[por('audi-a3-sportback-45'), 0], [por('vw-taigo'), 0], [por('opel-corsa'), 0], [por('peugeot-308-1-2'), 3], [por('audi-a3-sportback-30'), 0]];
   const [p0] = planos;
-  const preload = `<link rel="preload" as="image" imagesrcset="${srcset(p0[0], p0[1])}" imagesizes="100vw" fetchpriority="high">`;
+  void p0;
+  const preload = `<link rel="preload" as="image" href="${R('video/hero-capa-movel.webp')}" media="(max-aspect-ratio: 1/1)" fetchpriority="high"><link rel="preload" as="image" href="${R('video/hero-capa.webp')}" media="(min-aspect-ratio: 1/1)" fetchpriority="high">`;
   const minP = Math.min(...cs.map((c) => c.preco)), maxP = Math.max(...cs.map((c) => c.preco));
   const [dest, ...resto] = cs;
   const linha = (c: Carro, i: number) => `<li><a class="linha" href="${R(`viaturas/${c.slug}/`)}" data-linha data-img="${img(c, c.capa, 640)}" style="--i:${i}">
@@ -185,7 +186,8 @@ ${topo(true)}
 <section class="hero" data-hero>
   <div class="hero-moldura" data-moldura>
     <div class="hero-planos" data-planos>
-      ${planos.map(([c, i], k) => `<img class="hero-plano${k === 0 ? ' ativo' : ''}" style="--k:${k}" ${k === 0 ? `src="${img(c, i, 1800)}" srcset="${srcset(c, i)}" fetchpriority="high"` : `data-srcset="${srcset(c, i)}"`} sizes="100vw" alt="${esc(c.nome + ' ' + c.versao + ' à venda na Protrade')}" width="1448" height="1004" decoding="async">`).join('\n      ')}
+      <picture><source media="(max-aspect-ratio: 1/1)" srcset="${R('video/hero-capa-movel.webp')}" width="720" height="1280"><img class="hero-capa" src="${R('video/hero-capa.webp')}" alt="" width="1920" height="1080" fetchpriority="high" decoding="async"></picture>
+      <video class="hero-video" data-video muted playsinline loop preload="none" aria-hidden="true" data-movel="${R('video/hero-movel.mp4')}" data-hd="${R('video/hero-1080.mp4')}" data-uhd="${R('video/hero-2160.mp4')}"></video>
     </div>
     <div class="hero-veu"></div>
     <h1 class="hero-titulo cinetico" data-hero-titulo><span class="l"><span>Primeiro dono.</span></span><span class="l"><span><em>Origem certa.</em></span></span></h1>

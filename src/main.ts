@@ -70,24 +70,23 @@ function topo() {
   addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hidden) { fecha(); btn.focus(); } });
 }
 
-// ---------- hero: planos reais com câmara viva e fundidos longos; encolhe para moldura ao scroll ----------
+// ---------- hero: vídeo 4K em ciclo (telemóvel: corte vertical), com a capa por baixo; encolhe para moldura ao scroll ----------
 function hero() {
   const caixa = $('[data-planos]'); if (!caixa) return;
-  const planos = $$<HTMLImageElement>('.hero-plano', caixa);
-  let i = 0, timer = 0, visivel = true;
-  const carregaResto = () => planos.forEach((p) => { if (p.dataset.srcset) { p.srcset = p.dataset.srcset; delete p.dataset.srcset; } });
-  // os outros planos só se pedem depois da primeira pintura (não tiram nada ao LCP)
-  if (document.readyState === 'complete') setTimeout(carregaResto, 600); else addEventListener('load', () => setTimeout(carregaResto, 600));
-  const passa = () => {
-    if (semMov() || document.hidden || !visivel) return;
-    const seg = planos[(i + 1) % planos.length];
-    if (!seg.complete || !seg.currentSrc) return;
-    planos[i].classList.remove('ativo'); i = (i + 1) % planos.length; seg.classList.add('ativo');
-  };
-  const arranca = () => { clearInterval(timer); timer = window.setInterval(passa, 5200); };
-  arranca();
-  new IntersectionObserver(([e]) => { visivel = e.isIntersecting; }).observe(caixa);
-  document.addEventListener('visibilitychange', arranca);
+  const v = $<HTMLVideoElement>('[data-video]', caixa);
+  if (v) {
+    const vertical = matchMedia('(max-aspect-ratio: 1/1)').matches;
+    const larg = innerWidth * Math.min(devicePixelRatio || 1, 2);
+    v.src = (vertical ? v.dataset.movel : larg > 2200 ? v.dataset.uhd : v.dataset.hd) || '';
+    v.muted = true;
+    v.addEventListener('playing', () => caixa.classList.add('toca'), { once: true });
+    const toca = () => { if (!semMov() && !document.hidden) v.play().catch(() => {}); else v.pause(); };
+    new IntersectionObserver(([e]) => { if (e.isIntersecting) toca(); else v.pause(); }).observe(caixa);
+    document.addEventListener('visibilitychange', toca);
+    document.addEventListener('pt-movimento', toca);
+    // no primeiro toque (iPhone em poupança de energia) tenta outra vez
+    addEventListener('touchstart', toca, { once: true, passive: true });
+  }
 
   const moldura = $('[data-moldura]'), h = $('[data-hero]');
   if (!moldura || !h) return;
