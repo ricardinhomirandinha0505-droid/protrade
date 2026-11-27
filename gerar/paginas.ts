@@ -228,7 +228,11 @@ ${topo(true)}
 <section class="viaturas" id="viaturas">
   <div class="viaturas-cabeca">
     <h2 class="cinetico"><span class="l"><span>Que carros</span></span><span class="l"><span><em>temos agora?</em></span></span></h2>
-    <p>Sete carros, de ${euros(minP)} a ${euros(maxP)}.</p>
+    <dl class="resumo-stock" aria-label="Resumo do stock">
+      <div><dt>Carros</dt><dd>${cs.length}</dd></div>
+      <div><dt>Desde</dt><dd>${euros(minP)}</dd></div>
+      <div><dt>Até</dt><dd>${euros(maxP)}</dd></div>
+    </dl>
   </div>
   <a class="destaque" href="${R(`viaturas/${dest.slug}/`)}" data-cta-nav="destaque">
     <span class="destaque-foto"><img src="${img(dest, 1, 1200)}" srcset="${srcset(dest, 1)}" sizes="(max-width: 900px) 100vw, 62vw" alt="${esc(dest.nome + ' ' + dest.versao)}, de frente" width="1448" height="1004" loading="lazy" decoding="async"></span>
