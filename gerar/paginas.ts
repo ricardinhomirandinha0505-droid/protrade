@@ -1,6 +1,6 @@
 // Gera o HTML de cada rota (home + uma ficha por carro), os cartões de partilha, robots e sitemap, dentro de dist/.
 // Corre depois do `vite build` (lê o manifest para saber o JS e o CSS com hash).
-// SITE_URL=<url da prévia>  BASE=/<pasta>/  NOINDEX=1 (por omissão: protótipo, não indexar)
+// SITE_URL=<origem>  BASE=/<pasta>/  NOINDEX=1 (por omissão: não indexar)
 import fs from 'node:fs';
 import path from 'node:path';
 import sharp from 'sharp';
@@ -147,7 +147,7 @@ function rodape() {
   </div>
   <div class="rodape-linha rodape-pe">
     <p>${esc(MORADA)} · <a href="tel:${TEL_E164}" data-cta="rodape-ligar">${TEL}</a> (chamada para a rede móvel nacional) · <a href="mailto:${EMAIL}" data-cta="rodape-email">${EMAIL}</a></p>
-    <p><button class="mov" type="button" aria-pressed="false" data-movimento>Reduzir movimento</button> · Protótipo da AutoUpscale para a Protrade. Carros, preços e fotografias dos anúncios da Protrade a ${DATA_LISTA}.</p>
+    <p><button class="mov" type="button" aria-pressed="false" data-movimento>Reduzir movimento</button> · Carros, preços e fotografias dos anúncios da Protrade a ${DATA_LISTA}.</p>
   </div>
 </footer>`;
 }
